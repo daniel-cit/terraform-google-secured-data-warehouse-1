@@ -19,8 +19,11 @@ set -e
 POLICY_EXISTS=$(gcloud access-context-manager policies list --organization="${TF_VAR_org_id:?}" --format="value(name)")
 
 if [ -z "${POLICY_EXISTS}" ]; then
+   echo "creating missing access-context-manager policy"
    gcloud access-context-manager policies create --organization="${TF_VAR_org_id:?}" --title="default policy"
    POLICY_EXISTS=$(gcloud access-context-manager policies list --organization="${TF_VAR_org_id:?}" --format="value(name)")
 fi
 
 export TF_VAR_policy_id="${POLICY_EXISTS}"
+
+echo "current access-context-manager policy is ${TF_VAR_policy_id}"
